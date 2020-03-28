@@ -1,68 +1,53 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# News Scraper Frontend
+#### News Scraper began as a legacy pair project using headlines-graphql, a public API which serves main headlines of different newspapers:
+https://github.com/alandouglas96/headlines-graphql  
+#### We have since rebuilt the app from the ground up to be a full stack web scraping application.
+![Capture](https://user-images.githubusercontent.com/59053870/77827298-a9c49380-710c-11ea-80c2-0c0ede9179f2.JPG)
 
-## Available Scripts
+#### Users can select any text and/or image to scrape from any website and the server will scrape the site once an hour and store any non-duplicate data for the user to view.  
+![Capture](https://user-images.githubusercontent.com/59053870/77827414-67e81d00-710d-11ea-9bc9-db30c80c097c.JPG)  
 
-In the project directory, you can run:
+ ## Installation
+Download or clone this repository and the backend repository located here :
+https://github.com/David-Beale/News-scraper
 
-### `npm start`
+Run `npm i` in both repos to install dependencies.
+Add a .env file to the root directory of the server repo and add the URI for your Mongo database.
+Run `npm start` in both repos.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Features
+ 
+* Calendar select to browse tiles by date.  
+![image](https://user-images.githubusercontent.com/59053870/77828676-c4026f80-7114-11ea-826a-a6f0a86c8ba2.png) 
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+* Delete headlines will delete the current headline stored in the database. It will reappear if it is scraped again in the next cycle.  
+Delete scraper will stop scraping this headline from now on.  
+![image](https://user-images.githubusercontent.com/59053870/77828697-f14f1d80-7114-11ea-89b0-02795537b6c6.png)  
 
-### `npm test`
+* Add feed will allow the user to view an external website within the app. The draggable widget will allow the user to select a title, summary, image and link by clicking the desired content on the page. The scraping algorithm will save a unique path to the content which will be used each time the server scrapes the content.  
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+![image](https://user-images.githubusercontent.com/59053870/77829099-b4d0f100-7117-11ea-98fc-831db77a0776.png)  
 
-### `npm run build`
+* The "Not what you are looking for" button will try to access surrounding content and will give users the available options to choose from.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Built With
+* React
+* GraphQL
+* Apollo Server
+* Mongo DB
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+## Observations
+* All external scripts are disabled when viewing external sites. Therefore, websites which rely heavily on scripts will not display properly. However, any visible content can still be scraped even if the formatting is broken.
+* The scraping algorithm is currently unable to handle minor changes to the external site's layout. Any change to the external site will likely render the unique path invalid. 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Future Features
+* An algorithm that can handle minor changes to external DOMs
+* Multiple user accounts
 
-### `npm run eject`
+## Contributors
+* David Beale
+* Joseph Tolentino Cayamanda 
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Acknowledgements
+https://github.com/alandouglas96/headlines-graphql
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
