@@ -17,7 +17,7 @@ Run `npm start` in both repos.
 
 ## Features
  
-* Calendar select to browse tiles by date.  
+* Calendar select to browse headlines by date.  
 ![image](https://user-images.githubusercontent.com/59053870/77828676-c4026f80-7114-11ea-826a-a6f0a86c8ba2.png) 
 
 * Delete headlines will delete the current headline stored in the database. It will reappear if it is scraped again in the next cycle.  
