@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 // import './App.css';
-import HeadlineList from './headline-list/headline-list';
+import HeadlineList from './components/headline-list/headline-list';
 import Api from './api-client';
 import renderHTML from 'react-render-html';
 import DatePicker from 'react-date-picker'
@@ -12,7 +12,7 @@ let date = new Date().getDate();
 let month = new Date().getMonth() + 1;
 let year = new Date().getFullYear();
 
-function App() {
+function App (props) {
 
   const [dateFull, setDate] = useState(new Date());
   const [headlines, setHeadlines] = useState([]);
@@ -68,7 +68,7 @@ function App() {
       });
   }, []);
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  function handleClick(e) {
+  function handleClick (e) {
     e.preventDefault();
     console.log('click')
     let currentNode = e.target
@@ -120,7 +120,7 @@ function App() {
       setLinkPath(path)
     }
   }
-  function findPath(currentNode) {
+  function findPath (currentNode) {
     let path = [];
     let root = '';
     let parentNode = currentNode.parentNode
@@ -153,13 +153,13 @@ function App() {
     }
     return [path, root]
   }
-  function deepSearch() {
+  function deepSearch () {
     let currentNode = selectedNode.parentNode
     let localArrayOfOptions = []
     let localArrayOfNodes = []
     let localArrayOfTags = []
 
-    function search(currentNode) {
+    function search (currentNode) {
       if (status <= 2 && currentNode.innerText && currentNode.innerText.trim().length > 5) {
         localArrayOfOptions.push(currentNode.innerText.trim())
         localArrayOfNodes.push(currentNode)
@@ -208,34 +208,34 @@ function App() {
     }
   }
 
-  function changeStatus() {
+  function changeStatus () {
     if (status <= 4) {
       setStatus(status + 1)
     }
   }
-  function changeStatusBack() {
+  function changeStatusBack () {
     if (status >= 1) {
       setStatus(status - 1)
     }
   }
-  function toggleShow() {
+  function toggleShow () {
     setShow(!show)
     setShowForm(true)
   }
-  function submit() {
+  function submit () {
     Api.saveNewFeed(webLink, webName, titlePath, titleRoot, summaryPath, linkPath, imagePath, imageTag)
     toggleShow();
-    setTimeout(() => {
-      window.location.reload();
-    }, 2000);
+    // setTimeout(() => {
+    //   window.location.reload();
+    // }, 2000);
   }
-  function previousOption() {
+  function previousOption () {
     if (currentOption > 1) setCurrentOption(currentOption - 1)
   }
-  function nextOption() {
+  function nextOption () {
     if (currentOption < arrayOfOptions.length) setCurrentOption(currentOption + 1)
   }
-  function selectOption() {
+  function selectOption () {
     let node = arrayOfNodes[currentOption - 1]
     let [path, root] = findPath(node)
     console.log(node.innerText, path)
@@ -265,7 +265,8 @@ function App() {
   }
   const handleSubmit = (event) => {
     event.preventDefault();
-    const regex = "^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/?\n]+)"
+    // eslint-disable-next-line no-useless-escape
+    const regex = "^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/?\n]+)" 
     let localLink = webLink;
     if (webLink[0] === 'w' && webLink[1] === 'w' && webLink[2] === 'w') {
       setWebLink('https://' + webLink);
@@ -309,6 +310,14 @@ function App() {
     setDeleteScraper(!deleteScraper);
     setIsActiveStatusScraper(!isActiveLocal);
   }
+  const logout = () => {
+    Api.logout()
+
+      .then(data => {
+        props.setUser(false);
+        props.setisAuth(false);
+      });
+  };
 
 
 
@@ -324,6 +333,7 @@ function App() {
             <img
               className="logo"
               src={logoPath}
+              alt='logo'
             />
           </div>
           <div className="date-picker__container">
@@ -338,7 +348,6 @@ function App() {
           </div>
           <div className="action__container">
             <div>
-
               <Button
                 size="small"
                 variant="contained"
@@ -346,12 +355,13 @@ function App() {
                 onClick={toggleShow}
               >
                 Add Feed
-          </Button>
+              </Button>
               <Button size="small" variant="contained" onClick={refresh} className="appbar__button" >Refresh feed</Button>
             </div>
             <div>
-              <Button size="small" variant="contained" onClick={toggleDeleteHeadline} isActiveStatus={isActiveStatus} className={`${isActiveStatus && "danger"} appbar__button`}>Delete Headlines </Button>
-              <Button size="small" variant="contained" onClick={toggleDeleteScraper} isActiveStatusScraper={isActiveStatusScraper} className={`${isActiveStatusScraper && "danger2"} app-bar__button`} >Delete Scraper </Button>
+              <Button size="small" variant="contained" onClick={toggleDeleteHeadline} className={`${isActiveStatus && "danger"} appbar__button`}>Delete Headlines </Button>
+              <Button size="small" variant="contained" onClick={toggleDeleteScraper} className={`${isActiveStatusScraper && "danger2"} app-bar__button`} >Delete Scraper </Button>
+              <Button size="small" variant="contained" onClick={logout} className={`appbar__button`} >Logout</Button>
             </div>
           </div>
 
@@ -405,7 +415,7 @@ function App() {
                             </div>;
                             case 3: return <div>
                               <p className='formMessage'>Select an image</p>
-                              <img src={image} style={{ width: 100, height: 100 }}></img>
+                              <img src={image} style={{ width: 100, height: 100 }} alt='scraped'></img>
                             </div>;
                             case 4: return <div>
                               <p className='formMessage'>Select a link</p>
@@ -414,6 +424,7 @@ function App() {
                             case 5: return <div>
                               <h4>click SUBMIT to add your feed.</h4>
                             </div>
+                            default: return null;
                           }
                         })()}
                         <div className="action-buttons__container">
@@ -437,7 +448,7 @@ function App() {
                               </div>
                             }
                             {status === 3 &&
-                              <img src={arrayOfOptions[currentOption - 1]} style={{ height: 100 }}></img>
+                              <img src={arrayOfOptions[currentOption - 1]} style={{ height: 100 }} alt='scraped'></img>
                             }
                           </div>
                         </div>

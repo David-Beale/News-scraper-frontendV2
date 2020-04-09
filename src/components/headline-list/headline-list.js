@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Headline from '../headline/headline'
 import { CircularProgress } from '@material-ui/core';
 

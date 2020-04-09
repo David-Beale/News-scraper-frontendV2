@@ -1,6 +1,6 @@
 import React from 'react';
-import Api from '../api-client'
-import { Card, CardMedia, CardContent, Typography, CardActions, Button } from '@material-ui/core';
+import Api from '../../api-client'
+import { Card, CardMedia, CardContent, Typography } from '@material-ui/core';
 import DeleteForever from '@material-ui/icons/DeleteForever';
 
 export default ({ headline, deleteHeadline, deleteScraper, isActiveStatus, isActiveStatusScraper }) => {
@@ -27,6 +27,7 @@ export default ({ headline, deleteHeadline, deleteScraper, isActiveStatus, isAct
     < a
       className="anchor-link"
       href={headline.link}
+      rel="noopener noreferrer"
       target="_blank"
     >
       <Card className='card__container' raised={true}>

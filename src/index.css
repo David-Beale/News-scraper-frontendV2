@@ -281,6 +281,7 @@ button{
   margin: 16px;
 }
 .formContent{
+  font-size: 0.9rem;
   margin-top:2rem;
   overflow: scroll;
   overflow-x: hidden;
