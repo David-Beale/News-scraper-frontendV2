@@ -78,7 +78,6 @@ function App (props) {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   function handleClick (e) {
     e.preventDefault();
-    console.log('click')
     let currentNode = e.target
     let [path, root] = findPath(currentNode)
     let targetNode
@@ -87,7 +86,7 @@ function App (props) {
     } catch (error) {
       console.log(error)
     }
-    for (let i = path.length - 2; i >= 0; i--) {
+    for (let i = path.length - 1; i >= 0; i--) {
       targetNode = targetNode.children[path[i]]
     }
     setSelectedNode(targetNode)
@@ -132,27 +131,29 @@ function App (props) {
     let root = '';
     let parentNode = currentNode.parentNode
     let children = parentNode.children
-    while (currentNode.getAttribute('id') !== "externalMaster") {
-      let n;
-      for (let i = 0; i < children.length; i++) {
-        if (children[i] === currentNode) {
-          n = i;
-          i = children.length
-        }
+    while (currentNode.id !== "externalMaster") {
+      if (currentNode.id) {
+        root = '#' + currentNode.id.trim();
+        break;
       }
-      path.push(n)
-      if (parentNode.getAttribute('id') === "externalMaster") {
-        let id = currentNode.getAttribute('id')
+      if (parentNode.id === "externalMaster") {
+        let id = currentNode.id
         let thisClass = currentNode.getAttribute('class')
         if (id) {
-          id = '#' + id.trim();
-          root = id
+          root = '#' + id.trim();
         }
         else if (thisClass) {
           thisClass = thisClass.trim().split(' ').join('.')
           thisClass = '.' + thisClass
           root = thisClass
         };
+      } else {
+        for (let i = 0; i < children.length; i++) {
+          if (children[i] === currentNode) {
+            path.push(i)
+            break;
+          }
+        }
       }
       currentNode = parentNode;
       parentNode = currentNode.parentNode;
@@ -245,7 +246,6 @@ function App (props) {
   function selectOption () {
     let node = arrayOfNodes[currentOption - 1]
     let [path, root] = findPath(node)
-    console.log(node.innerText, path)
     if (status === 1) {
       setTitleRoot(root)
       setTitlePath(path)
