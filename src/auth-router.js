@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Signup from "./components/session/signup";
 import Login from "./components/session/login";
-import Landing from "./components/session/landing";
 import App from "./App";
 import Loading from "./components/session/loading";
 import Api from './api-client';
@@ -41,7 +40,6 @@ function AuthRouter () {
         className="App switch-wrapper"
       >
 
-        <Auth exact path="/landing" component={Landing} isAuth={isAuth} />
         <Auth exact path="/register" component={Signup} isAuth={isAuth} />
         <Auth exact path="/login" component={() => <Login setisAuth={setisAuth} setUser={setUser} setisLoading={setisLoading}/>} isAuth={isAuth}  />
         <Protected path="/" component={() => <App user={user} setisAuth={setisAuth} setUser={setUser}/>} isAuth={isAuth} isLoading={isLoading} />
@@ -77,7 +75,7 @@ const Protected = ({ component: Component, isAuth, isLoading, ...rest }) => {
           <Component {...props} />
         ) : (
             // Redirect to the login page if the user is not authenticated
-            <Redirect to="/landing" />
+            <Redirect to="/login" />
           );
       }}
     />

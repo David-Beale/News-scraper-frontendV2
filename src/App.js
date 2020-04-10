@@ -53,7 +53,10 @@ function App (props) {
       date = selectedDate.getDate();
     }
     Api.getHeadlines(date, month, year)
-      .then(data => setHeadlines(data.data.headline))
+      .then(result => {
+        if (result.data.headline.length === 0) setHeadlines(false)
+        else setHeadlines(result.data.headline)
+      })
       .catch((error) => {
         console.log("Api call error");
         alert(error.message);
@@ -64,7 +67,12 @@ function App (props) {
   useEffect(() => {
     Api.getHeadlines(date, month, year)
       .then(result => {
-        setHeadlines(result.data.headline)
+        if (result.data.headline.length === 0) setHeadlines(false)
+        else setHeadlines(result.data.headline)
+      })
+      .catch((error) => {
+        console.log("Api call error");
+        alert(error.message);
       });
   }, []);
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -108,9 +116,8 @@ function App (props) {
       }
       setImagePath(path)
     } else if (status === 4) {
-      console.log(concatWebLink)
       if (targetNode.href) {
-        if (targetNode.href[7] === 'l') setLink(concatWebLink + targetNode.href.slice(21))
+        if (targetNode.href[7] === 'l') setLink(concatWebLink + targetNode.href.slice(21)) //UPDATE FOR DEPLOYMENT
         else setLink(targetNode.href)
       } else if (targetNode.parentNode.href) {
         path.shift();
@@ -225,9 +232,9 @@ function App (props) {
   function submit () {
     Api.saveNewFeed(webLink, webName, titlePath, titleRoot, summaryPath, linkPath, imagePath, imageTag)
     toggleShow();
-    // setTimeout(() => {
-    //   window.location.reload();
-    // }, 2000);
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   }
   function previousOption () {
     if (currentOption > 1) setCurrentOption(currentOption - 1)
@@ -266,7 +273,7 @@ function App (props) {
   const handleSubmit = (event) => {
     event.preventDefault();
     // eslint-disable-next-line no-useless-escape
-    const regex = "^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/?\n]+)" 
+    const regex = "^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/?\n]+)"
     let localLink = webLink;
     if (webLink[0] === 'w' && webLink[1] === 'w' && webLink[2] === 'w') {
       setWebLink('https://' + webLink);
@@ -293,7 +300,8 @@ function App (props) {
     });
     Api.getHeadlines(date, month, year).then(result => {
       if (result.data) {
-        setHeadlines(result.data.headline)
+        if (result.data.headline.length === 0) setHeadlines(false)
+        else setHeadlines(result.data.headline)
       }
     });
     setTimeout(() => {
@@ -325,44 +333,21 @@ function App (props) {
   return (
     <div>
       <div className="app__container">
-        <nav className="appbar bar">
-          <div
-            // onClick={e => { e.preventDefault(); setAddFeed(false) }}
-            className="logo__container"
-          >
-            <img
-              className="logo"
-              src={logoPath}
-              alt='logo'
+        <nav className="appbar">
+          <div className="action-container no1">
+            <img className="logo" src={logoPath} alt='logo'
+            //onClick={e => { e.preventDefault(); setAddFeed(false) }}
             />
+            <Button size="small" variant="contained" onClick={toggleDeleteHeadline} className={`${isActiveStatus && "danger"} appbar__button`}>Delete Headline</Button>
+            <Button size="small" variant="contained" onClick={toggleDeleteScraper} className={`${isActiveStatusScraper && "danger2"} app-bar__button`} >Delete Feed </Button>
           </div>
-          <div className="date-picker__container">
-
-            <DatePicker
-              clearIcon={null}
-              calendarIcon={null}
-              className="date-picker"
-              value={dateFull}
-              maxDate={new Date()}
-              onChange={(date) => onChange(date)} />
+          <div className="action-container no2">
+            <Button size="small" variant="contained" className="form-toggle appbar__button" onClick={toggleShow}>Add</Button>
+            <DatePicker clearIcon={null} calendarIcon={null} className="date-picker" value={dateFull} maxDate={new Date()} onChange={(date) => onChange(date)} />
+            <Button size="small" variant="contained" onClick={refresh} className="appbar__button" >Refresh</Button>
           </div>
-          <div className="action__container">
-            <div>
-              <Button
-                size="small"
-                variant="contained"
-                className="form-toggle appbar__button"
-                onClick={toggleShow}
-              >
-                Add Feed
-              </Button>
-              <Button size="small" variant="contained" onClick={refresh} className="appbar__button" >Refresh feed</Button>
-            </div>
-            <div>
-              <Button size="small" variant="contained" onClick={toggleDeleteHeadline} className={`${isActiveStatus && "danger"} appbar__button`}>Delete Headlines </Button>
-              <Button size="small" variant="contained" onClick={toggleDeleteScraper} className={`${isActiveStatusScraper && "danger2"} app-bar__button`} >Delete Scraper </Button>
-              <Button size="small" variant="contained" onClick={logout} className={`appbar__button`} >Logout</Button>
-            </div>
+          <div className="action-container no3">
+            <Button size="small" variant="contained" onClick={logout} className={`appbar__button`} >Logout</Button>
           </div>
 
         </nav>
@@ -467,11 +452,6 @@ function App (props) {
             }
           </div>
         }
-      </div>
-      <div className="footer__container bar">
-        <p className="footer__text">
-          <i>developed by:</i> David Beale & Joseph T.C.
-        </p>
       </div>
     </div >
   );
