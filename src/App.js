@@ -59,27 +59,28 @@ function App (props) {
       })
       .catch((error) => {
         console.log("Api call error");
-        alert(error.message);
+        console.log(error.message);
       });
     setDate(currentDate);
   };
 
   useEffect(() => {
-    Api.getHeadlines(date, month, year)
-      .then(result => {
-        if (result.data.headline.length === 0) setHeadlines(false)
-        else setHeadlines(result.data.headline)
-      })
-      .catch((error) => {
-        console.log("Api call error");
-        alert(error.message);
-      });
+      Api.getHeadlines(date, month, year)
+        .then(result => {
+          if (result.data.headline.length === 0) setHeadlines(false)
+          else setHeadlines(result.data.headline)
+        })
+        .catch((error) => {
+          console.log("Api call error");
+          console.log(error.message);
+        });
   }, []);
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   function handleClick (e) {
     e.preventDefault();
     let currentNode = e.target
     let [path, root] = findPath(currentNode)
+    console.log(path, root)
     let targetNode
     try {
       targetNode = document.querySelector(root);
@@ -116,11 +117,11 @@ function App (props) {
       setImagePath(path)
     } else if (status === 4) {
       if (targetNode.href) {
-        if (targetNode.href[7] === 'l') setLink(concatWebLink + targetNode.href.slice(21)) //UPDATE FOR DEPLOYMENT
+        if (targetNode.href.slice(0,31) === 'https://db-newsfeeds.netlify.com') setLink(concatWebLink + targetNode.href.slice(21)) //UPDATE FOR DEPLOYMENT
         else setLink(targetNode.href)
       } else if (targetNode.parentNode.href) {
         path.shift();
-        if (targetNode.parentNode.href[7] === 'l') setLink(concatWebLink + targetNode.parentNode.href.slice(21))
+        if (targetNode.href.slice(0,31) === 'https://db-newsfeeds.netlify.com') setLink(concatWebLink + targetNode.parentNode.href.slice(21))
         else setLink(targetNode.parentNode.href)
       }
       setLinkPath(path)
