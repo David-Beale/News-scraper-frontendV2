@@ -29,6 +29,9 @@ function AuthRouter () {
           setisAuth(false);
           setisLoading(false);
         }
+      })
+      .catch(err => {
+        console.log(err)
       });
   }, []);
   return (

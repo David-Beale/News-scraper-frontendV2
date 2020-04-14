@@ -117,11 +117,11 @@ function App (props) {
       setImagePath(path)
     } else if (status === 4) {
       if (targetNode.href) {
-        if (targetNode.href.slice(0,31) === 'https://db-newsfeeds.netlify.com') setLink(concatWebLink + targetNode.href.slice(21)) //UPDATE FOR DEPLOYMENT
+        if (targetNode.href.slice(0,32) === 'https://db-newsfeeds.netlify.com') setLink(concatWebLink + targetNode.href.slice(32)) 
         else setLink(targetNode.href)
       } else if (targetNode.parentNode.href) {
         path.shift();
-        if (targetNode.href.slice(0,31) === 'https://db-newsfeeds.netlify.com') setLink(concatWebLink + targetNode.parentNode.href.slice(21))
+        if (targetNode.parentNode.href.slice(0,32) === 'https://db-newsfeeds.netlify.com') setLink(concatWebLink + targetNode.parentNode.href.slice(32))
         else setLink(targetNode.parentNode.href)
       }
       setLinkPath(path)
