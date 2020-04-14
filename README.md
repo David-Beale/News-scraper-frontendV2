@@ -19,7 +19,6 @@ https://db-newsfeeds.netlify.com/
 #### Browse previously scraped headlines by date using the calendar select tool.
 
 ### Authentication
-![news-img4](https://user-images.githubusercontent.com/59053870/79229866-a0049500-7e5b-11ea-827e-b1f32649572d.PNG)
 #### Authentication allows users to control their own content which will only be accessible to their account.
 
 ### Delete
